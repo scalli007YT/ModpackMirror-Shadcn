@@ -57,8 +57,7 @@
 <script setup lang="ts">
 import * as z from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
-import { useToast } from '@/components/ui/toast'
-const { toast } = useToast()
+import { toast } from 'vue-sonner';
 
 const emit = defineEmits<{
   (e: 'created'): void
@@ -85,20 +84,17 @@ async function onSubmit(values: any) {
         password: values.password,
       },
     })
-
-    toast({
-      title: 'Connection created',
+    toast('Connection created', {
       description: 'The Connection was created successfully',
     })
-
     isDialogOpen.value = false
     emit('created')
-  } catch (e) {
-    console.error(e)
-    toast({
-      title: 'Error',
-      description: 'Failed to create connection',
+  } catch (e: any) {
+    const message = e?.data?.message || e?.message || 'Failed to create connection';
+    toast('Error', {
+      description: message,
     })
+    console.error(e)
   }
 }
 </script>

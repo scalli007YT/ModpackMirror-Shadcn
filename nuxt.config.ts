@@ -3,8 +3,19 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
-  devtools: { enabled: true },
-  modules: ['@nuxt/icon', 'shadcn-nuxt', '@nuxtjs/color-mode'],
+  runtimeConfig: {
+    CurseforgeAPIKey: process.env.CURSEFORGE_API_KEY,
+    public: {
+      VersioningFileName: process.env.VERSIONING_FILE_NAME
+    }
+  },
+  devtools: { enabled: false },
+  modules: [
+    '@nuxt/icon',
+    'shadcn-nuxt',
+    '@nuxtjs/color-mode',
+    '@nuxt/image',
+  ],
   colorMode: {
     classSuffix: ''
   },

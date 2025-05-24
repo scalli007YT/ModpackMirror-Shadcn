@@ -56,8 +56,8 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from '@/components/ui/toast'
-const { toast } = useToast()
+import { toast } from 'vue-sonner';
+
 
 const props = defineProps<{
   server: {
@@ -97,20 +97,35 @@ const { data, error } = await useFetch<ApiResponse>('/api/v1/serverfiles/sftp-co
 })
 
 if (error.value) {
+  const message = error.value?.data?.message || error.value?.message || 'Failed to fetch server files';
+  toast('Error', {
+    description: message,
+  })
   console.error('Fehler:', error.value)
 }
 
 const deleteServer = async (id: string) => {
-  try {
-    await $fetch('/api/v1/servers', {
-      method: 'DELETE',
-      body: { id },
+  const { data, error } = await useFetch<{ success: boolean; message?: string }>('/api/v1/servers', {
+    method: 'DELETE',
+    body: { id },
+  });
+  if (error.value) {
+    const message = error.value?.data?.message || error.value?.message || 'Failed to delete server';
+    toast('Error', {
+      description: message,
     });
-    toast({ title: 'Server deleted', description: 'The server was deleted successfully' })
-    emit('changed')
-  } catch (e) {
-    console.error(e)
-    toast({ title: 'Error', description: 'Failed to delete server' })
+    console.error(error.value);
+    return;
+  }
+  if (data.value?.success) {
+    toast('Server deleted', {
+      description: 'The server was deleted successfully',
+    });
+    emit('changed');
+  } else {
+    toast('Error', {
+      description: data.value?.message || 'Failed to delete server',
+    });
   }
 }
 

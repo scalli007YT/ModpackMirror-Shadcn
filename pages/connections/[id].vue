@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <!-- slot content -->
   <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
@@ -18,6 +21,3 @@
     <div class="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
   </div>
 </template>
-
-<script setup lang="ts">
-</script>

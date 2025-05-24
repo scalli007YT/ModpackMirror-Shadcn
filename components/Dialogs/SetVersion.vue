@@ -35,9 +35,7 @@ const route = useRoute()
 
 import * as z from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
-import { useToast } from '@/components/ui/toast'
-const { toast } = useToast()
-
+import { toast } from 'vue-sonner';
 const emit = defineEmits<{
   (e: 'created'): void
 }>()
@@ -66,7 +64,9 @@ async function onSubmit(values: any) {
     toast({ title: 'File created', description: 'The file was created successfully' })
     isDialogOpen.value = false
     emit('created')
-  } catch (e) {
+  } catch (e: any) {
+    const message = e?.data?.message || e?.message || 'Failed to create file';
+    toast({ title: 'Error', description: message })
     console.error(e)
   }
 }
