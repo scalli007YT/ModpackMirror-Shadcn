@@ -1,7 +1,7 @@
 <template>
-  <Card>
+  <Card class="rounded-lg p-4">
     <div class="flex flex-row items-start">
-      <NuxtImg :src="modpack.logo?.url || '/images/placeholder.png'" class="w-32 h-32 rounded-lg object-cover"
+      <NuxtImg :src="modpack.logo?.url || '/images/placeholder.png'" class="w-24 h-24 rounded-sm object-cover"
         alt="Modpack Logo" />
       <div class="flex-1 flex flex-col justify-between h-full">
         <CardHeader class="w-full flex flex-row items-center justify-between">
@@ -21,6 +21,7 @@
           </div>
         </CardFooter>
       </div>
+      <Button class="w-24 h-24" variant="outline">Assign</Button>
     </div>
   </Card>
 </template>
