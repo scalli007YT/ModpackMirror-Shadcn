@@ -22,7 +22,7 @@
 
         <NuxtLink :to="hasVersion
           ? { path: '/modpacks' }
-          : { path: '/servers/' + server.id, query: { host: server.host, password: server.password } }">
+          : { path: '/connections/' + server.id, query: { host: server.host, password: server.password } }">
           <Button>
             <Icon :name="hasVersion ? 'material-symbols:tools-wrench' : 'material-symbols:gfit-health'" />
             {{ hasVersion ? 'Manage Modpack' : 'Fix File' }}
@@ -87,22 +87,22 @@ interface ApiResponse {
   files: FileEntry[]
 }
 
-const { data, error } = await useFetch<ApiResponse>('/api/v1/serverfiles/sftp-connect', {
-  method: 'POST',
-  body: {
-    connectionUrl: props.server.host,
-    username: props.server.username,
-    password: props.server.password,
-  },
-})
+// const { data, error } = await useFetch<ApiResponse>('/api/v1/serverfiles/sftp-connect', {
+//   method: 'POST',
+//   body: {
+//     connectionUrl: props.server.host,
+//     username: props.server.username,
+//     password: props.server.password,
+//   },
+// })
 
-if (error.value) {
-  const message = error.value?.data?.message || error.value?.message || 'Failed to fetch server files';
-  toast('Error', {
-    description: message,
-  })
-  console.error('Fehler:', error.value)
-}
+// if (error.value) {
+//   const message = error.value?.data?.message || error.value?.message || 'Failed to fetch server files';
+//   toast('Error', {
+//     description: message,
+//   })
+//   console.error('Fehler:', error.value)
+// }
 
 const deleteServer = async (id: string) => {
   const { data, error } = await useFetch<{ success: boolean; message?: string }>('/api/v1/servers', {
@@ -132,6 +132,8 @@ const deleteServer = async (id: string) => {
 
 
 const VersioningFileName = useRuntimeConfig().public.VersioningFileName
-const fileResult = computed(() => data.value?.files ?? [])
-const hasVersion = computed(() => fileResult.value.some(item => item.name === VersioningFileName))
+// const fileResult = computed(() => data.value?.files ?? [])
+// const hasVersion = computed(() => fileResult.value.some(item => item.name === VersioningFileName))
+const fileResult = null
+const hasVersion = true
 </script>
