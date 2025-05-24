@@ -4,7 +4,10 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/icon', 'shadcn-nuxt'],
+  modules: ['@nuxt/icon', 'shadcn-nuxt', '@nuxtjs/color-mode'],
+  colorMode: {
+    classSuffix: ''
+  },
   shadcn: {
     /**
      * Prefix for all the imported component
