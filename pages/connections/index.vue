@@ -25,6 +25,8 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue-sonner';
+
 interface SFTPServer {
   id: string
   name?: string
@@ -47,9 +49,13 @@ const { data, error, refresh } = await useFetch<ApiResponse>('/api/v1/servers', 
 })
 const serverResult = computed(() => data.value?.data ?? []);
 
-
 if (error.value) {
+  toast.error('Error', { description: error.value?.data?.message || error.value?.message || 'Failed to load servers' });
   console.error('Fehler:', error.value)
+} else if (data.value && !data.value.success) {
+  toast.error('Error', { description: (data.value as any)?.message || 'Failed to load servers' });
+} else if (data.value && data.value.success) {
+  toast.success('Success', { description: 'Servers loaded successfully' });
 }
 
 

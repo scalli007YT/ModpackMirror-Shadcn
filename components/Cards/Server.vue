@@ -87,6 +87,7 @@ interface ApiResponse {
   files: FileEntry[]
 }
 
+// Fetch server files example (standardized error/success handling)
 // const { data, error } = await useFetch<ApiResponse>('/api/v1/serverfiles/sftp-connect', {
 //   method: 'POST',
 //   body: {
@@ -95,13 +96,13 @@ interface ApiResponse {
 //     password: props.server.password,
 //   },
 // })
-
 // if (error.value) {
-//   const message = error.value?.data?.message || error.value?.message || 'Failed to fetch server files';
-//   toast('Error', {
-//     description: message,
-//   })
+//   toast.error('Error', { description: error.value?.data?.message || error.value?.message || 'Failed to fetch server files' });
 //   console.error('Fehler:', error.value)
+// } else if (!data.value?.success) {
+//   toast.error('Error', { description: data.value?.message || 'Failed to fetch server files' });
+// } else {
+//   toast.success('Success', { description: 'Server files loaded successfully' });
 // }
 
 const deleteServer = async (id: string) => {
@@ -110,23 +111,16 @@ const deleteServer = async (id: string) => {
     body: { id },
   });
   if (error.value) {
-    const message = error.value?.data?.message || error.value?.message || 'Failed to delete server';
-    toast.error('Error', {
-      description: message,
-    });
+    toast.error('Error', { description: error.value?.data?.message || error.value?.message || 'Failed to delete server' });
     console.error(error.value);
     return;
   }
-  if (data.value?.success) {
-    toast.success('Server deleted', {
-      description: 'The server was deleted successfully',
-    });
-    emit('changed');
-  } else {
-    toast.error('Error', {
-      description: data.value?.message || 'Failed to delete server',
-    });
+  if (!data.value?.success) {
+    toast.error('Error', { description: data.value?.message || 'Failed to delete server' });
+    return;
   }
+  toast.success('Server deleted', { description: 'The server was deleted successfully' });
+  emit('changed');
 }
 
 

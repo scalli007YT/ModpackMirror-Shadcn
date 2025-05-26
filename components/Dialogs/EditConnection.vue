@@ -47,7 +47,7 @@
           </FormField>
         </form>
         <DialogFooter>
-          <Button type="submit" form="dialogForm">Create file</Button>
+          <Button type="submit" form="dialogForm">Update file</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
