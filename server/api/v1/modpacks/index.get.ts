@@ -14,7 +14,7 @@ export default defineEventHandler(async (event: H3Event) => {
       classId: 4471, 
       searchFilter: searchTerm,  // use dynamic search term here
       sortField: 2,
-      pageSize: 5,
+      pageSize: 10,
       sortOrder: CurseForgeSortOrder.Descending
     });
 
