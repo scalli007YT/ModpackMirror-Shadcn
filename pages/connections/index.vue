@@ -17,7 +17,7 @@
 
     <main class="grid gap-2">
       <section v-for="(item, index) in serverResult" :key="index">
-        <CardsServer :server="item" :key="item.id" @changed="refresh()" />
+        <CardsListConnection :server="item" :key="item.id" @changed="refresh()" />
       </section>
     </main>
     <div class="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />

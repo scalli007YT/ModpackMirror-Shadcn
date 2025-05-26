@@ -32,7 +32,7 @@
       </div>
       <div class="max-h-[75vh] overflow-y-auto flex flex-col gap-y-4 rounded-xl p-2">
         <section v-for="(item, index) in searchResult" :key="index">
-          <CardsModpack :modpack="item" />
+          <CardsListModpack :modpack="item" />
         </section>
       </div>
     </div>
