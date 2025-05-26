@@ -103,9 +103,6 @@ async function onSubmit(values: any) {
         password: values.password,
       },
     })
-    toast.success('Connection updated', {
-      description: 'The Connection was updated successfully',
-    })
     isDialogOpen.value = false
     emit('edited')
   } catch (e: any) {

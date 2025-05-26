@@ -64,8 +64,6 @@ if (error.value) {
   toast.error('Error', { description: error.value?.data?.message || error.value?.message || 'An error occurred while loading modpacks' });
 } else if (data.value && !data.value.success) {
   toast.error('Error', { description: data.value?.message || 'Failed to load modpacks' });
-} else if (data.value && data.value.success) {
-  toast.success('Success', { description: 'Modpacks loaded successfully' });
 }
 
 const searchResult = computed(() => data.value?.data ?? []);

@@ -61,7 +61,6 @@ async function onSubmit(values: any) {
         content: values.version
       }
     })
-    toast.success('File created', { description: 'The file was created successfully' })
     isDialogOpen.value = false
     emit('created')
   } catch (e: any) {

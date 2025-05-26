@@ -84,9 +84,6 @@ async function onSubmit(values: any) {
         password: values.password,
       },
     })
-    toast.success('Connection created', {
-      description: 'The Connection was created successfully',
-    })
     isDialogOpen.value = false
     emit('created')
   } catch (e: any) {

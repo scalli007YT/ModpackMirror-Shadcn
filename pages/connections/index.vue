@@ -54,8 +54,6 @@ if (error.value) {
   console.error('Fehler:', error.value)
 } else if (data.value && !data.value.success) {
   toast.error('Error', { description: (data.value as any)?.message || 'Failed to load servers' });
-} else if (data.value && data.value.success) {
-  toast.success('Success', { description: 'Servers loaded successfully' });
 }
 
 
