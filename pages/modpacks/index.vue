@@ -30,7 +30,7 @@
         <Icon name="material-symbols:error-outline" class="size-6 text-red-500" />
         <span class="text-red-500">Try searching again!</span>
       </div>
-      <div class="max-h-[75vh] overflow-y-auto flex flex-col gap-y-2 rounded-lg">
+      <div class="max-h-[75vh] overflow-y-auto flex flex-col gap-y-4 rounded-xl p-2">
         <section v-for="(item, index) in searchResult" :key="index">
           <CardsModpack :modpack="item" />
         </section>

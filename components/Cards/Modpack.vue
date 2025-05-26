@@ -1,7 +1,7 @@
 <template>
-  <Card class="rounded-lg p-4">
-    <div class="flex flex-row items-start">
-      <NuxtImg :src="modpack.logo?.url || '/images/placeholder.png'" class="w-24 h-24 rounded-sm object-cover"
+  <Card class="rounded-xl p-6">
+    <div class="flex flex-row items-start gap-6">
+      <NuxtImg :src="modpack.logo?.url || '/images/placeholder.png'" class="w-28 h-28 rounded-xl object-cover"
         alt="Modpack Logo" />
       <div class="flex-1 flex flex-col justify-between h-full">
         <CardHeader class="w-full flex flex-row items-center justify-between">
