@@ -61,12 +61,14 @@ async function onSubmit(values: any) {
         content: values.version
       }
     })
-    toast({ title: 'File created', description: 'The file was created successfully' })
+    toast.success('File created', { description: 'The file was created successfully' })
     isDialogOpen.value = false
     emit('created')
   } catch (e: any) {
     const message = e?.data?.message || e?.message || 'Failed to create file';
-    toast({ title: 'Error', description: message })
+    toast.error('Error', {
+      description: message,
+    })
     console.error(e)
   }
 }

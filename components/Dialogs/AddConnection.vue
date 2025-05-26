@@ -84,14 +84,14 @@ async function onSubmit(values: any) {
         password: values.password,
       },
     })
-    toast('Connection created', {
+    toast.success('Connection created', {
       description: 'The Connection was created successfully',
     })
     isDialogOpen.value = false
     emit('created')
   } catch (e: any) {
     const message = e?.data?.message || e?.message || 'Failed to create connection';
-    toast('Error', {
+    toast.error('Error', {
       description: message,
     })
     console.error(e)

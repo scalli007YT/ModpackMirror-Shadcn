@@ -103,14 +103,14 @@ async function onSubmit(values: any) {
         password: values.password,
       },
     })
-    toast('Connection updated', {
+    toast.success('Connection updated', {
       description: 'The Connection was updated successfully',
     })
     isDialogOpen.value = false
     emit('edited')
   } catch (e: any) {
     const message = e?.data?.message || e?.message || 'Failed to update connection';
-    toast('Error', {
+    toast.error('Error', {
       description: message,
     })
     console.error(e)

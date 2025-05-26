@@ -60,13 +60,13 @@ const { data, error, pending } = useFetch<ApiResponse>('/api/v1/modpacks', {
   watch: [searchInput],
   onResponse({ response }) {
     if (response._data?.success) {
-      toast('Success', { description: 'Modpacks loaded successfully' });
+      toast.success('Success', { description: 'Modpacks loaded successfully' });
     } else {
-      toast('Error', { description: response._data?.message || 'Failed to load modpacks' });
+      toast.error('Error', { description: response._data?.message || 'Failed to load modpacks' });
     }
   },
   onResponseError({ error }) {
-    toast('Error', { description: error?.message || 'An error occurred while loading modpacks' });
+    toast.error('Error', { description: error?.message || 'An error occurred while loading modpacks' });
   }
 });
 
