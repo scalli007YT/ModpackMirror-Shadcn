@@ -86,6 +86,9 @@ async function onSubmit(values: any) {
     })
     isDialogOpen.value = false
     emit('created')
+    toast.success('Connection created successfully', {
+      description: 'Your connection has been created.',
+    })
   } catch (e: any) {
     const message = e?.data?.message || e?.message || 'Failed to create connection';
     toast.error('Error', {

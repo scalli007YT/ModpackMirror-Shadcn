@@ -105,6 +105,9 @@ async function onSubmit(values: any) {
     })
     isDialogOpen.value = false
     emit('edited')
+    toast.success('Connection updated successfully', {
+      description: 'Your connection details have been updated.',
+    })
   } catch (e: any) {
     const message = e?.data?.message || e?.message || 'Failed to update connection';
     toast.error('Error', {
