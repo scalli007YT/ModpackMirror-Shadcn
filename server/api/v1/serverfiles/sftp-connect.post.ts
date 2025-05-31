@@ -1,4 +1,4 @@
-import SftpClient from 'ssh2-sftp-client';
+import SftpClient from "ssh2-sftp-client";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -10,25 +10,26 @@ export default defineEventHandler(async (event) => {
     const sftp = new SftpClient();
     await sftp.connect({
       host: url.hostname,
-      port: parseInt(url.port || '22'),
+      port: Number.parseInt(url.port || "22"),
       username,
-      password
+      password,
     });
 
-    const fileList = await sftp.list('/');
+    const fileList = await sftp.list("/");
     await sftp.end();
 
     return {
       success: true,
-      files: fileList
+      files: fileList,
     };
-  } catch (err: any) {
+  }
+  catch (err: any) {
     return {
       success: false,
-      message: 'SFTP connection failed',
+      message: "SFTP connection failed",
       error: err?.message || String(err),
       stack: err?.stack || undefined,
-      code: err?.code || undefined
+      code: err?.code || undefined,
     };
   }
 });

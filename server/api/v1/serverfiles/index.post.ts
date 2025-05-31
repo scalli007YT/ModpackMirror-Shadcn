@@ -1,4 +1,4 @@
-import SftpClient from 'ssh2-sftp-client';
+import SftpClient from "ssh2-sftp-client";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -7,20 +7,21 @@ export default defineEventHandler(async (event) => {
   let url: URL;
   try {
     url = new URL(connectionUrl);
-  } catch (err: any) {
+  }
+  catch (err: any) {
     return {
       success: false,
-      message: 'Invalid connection URL',
-      error: err?.message || String(err)
+      message: "Invalid connection URL",
+      error: err?.message || String(err),
     };
   }
 
-  const port = url.port ? parseInt(url.port) : 22;
+  const port = url.port ? Number.parseInt(url.port) : 22;
   if (isNaN(port) || port <= 0 || port > 65535) {
     return {
       success: false,
-      message: 'Invalid port number',
-      error: `Port provided: ${url.port}`
+      message: "Invalid port number",
+      error: `Port provided: ${url.port}`,
     };
   }
 
@@ -31,46 +32,49 @@ export default defineEventHandler(async (event) => {
       host: url.hostname,
       port,
       username,
-      password
+      password,
     });
-  } catch (err: any) {
+  }
+  catch (err: any) {
     return {
       success: false,
-      message: 'Failed to connect to SFTP server',
+      message: "Failed to connect to SFTP server",
       error: err?.message || String(err),
       stack: err?.stack || undefined,
-      code: err?.code || undefined
+      code: err?.code || undefined,
     };
   }
 
   try {
     const remotePath = `/${filename}`;
-    await sftp.put(Buffer.from(content, 'utf-8'), remotePath);
-  } catch (err: any) {
+    await sftp.put(Buffer.from(content, "utf-8"), remotePath);
+  }
+  catch (err: any) {
     await sftp.end();
     return {
       success: false,
-      message: 'Failed to upload file',
+      message: "Failed to upload file",
       error: err?.message || String(err),
       stack: err?.stack || undefined,
-      code: err?.code || undefined
+      code: err?.code || undefined,
     };
   }
 
   try {
     await sftp.end();
-  } catch (err: any) {
+  }
+  catch (err: any) {
     return {
       success: false,
-      message: 'Failed to close SFTP connection properly',
+      message: "Failed to close SFTP connection properly",
       error: err?.message || String(err),
       stack: err?.stack || undefined,
-      code: err?.code || undefined
+      code: err?.code || undefined,
     };
   }
 
   return {
     success: true,
-    message: `File "${filename}" created successfully.`
+    message: `File "${filename}" created successfully.`,
   };
 });

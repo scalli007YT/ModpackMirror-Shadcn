@@ -1,40 +1,38 @@
 <script setup lang="ts">
-const routePath = useRoute().path
-
-import {
-  type SidebarProps,
-} from '@/components/ui/sidebar'
+import type { SidebarProps } from "@/components/ui/sidebar";
 
 const props = withDefaults(defineProps<SidebarProps>(), {
-  variant: 'floating',
-})
+  variant: "floating",
+});
+
+const routePath = useRoute().path;
 
 // This is sample data.
 const data = {
   navMain: [
     {
-      title: 'App',
-      url: '/',
+      title: "App",
+      url: "/",
       items: [
         {
-          title: 'Dashboard',
-          url: '/',
-          icon: 'lucide:layout-dashboard',
+          title: "Dashboard",
+          url: "/",
+          icon: "lucide:layout-dashboard",
         },
         {
-          title: 'Connections',
-          url: '/connections',
-          icon: 'lucide:server',
+          title: "Connections",
+          url: "/connections",
+          icon: "lucide:server",
         },
         {
-          title: 'Modpacks',
-          url: '/modpacks',
-          icon: 'mdi:minecraft',
+          title: "Modpacks",
+          url: "/modpacks",
+          icon: "mdi:minecraft",
         },
       ],
-    }
+    },
   ],
-}
+};
 </script>
 
 <template>
@@ -45,7 +43,8 @@ const data = {
           <SidebarMenuButton size="lg" as-child>
             <a href="#">
               <div
-                class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
+              >
                 <Icon name="simple-icons:curseforge" size="18" />
               </div>
               <div class="flex flex-col gap-0.5 leading-none">

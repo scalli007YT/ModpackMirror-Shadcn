@@ -1,40 +1,47 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-05-15',
+  compatibilityDate: "2025-05-15",
   runtimeConfig: {
     CurseforgeAPIKey: process.env.CURSEFORGE_API_KEY,
     public: {
-      VersioningFileName: process.env.VERSIONING_FILE_NAME
-    }
+      VersioningFileName: process.env.VERSIONING_FILE_NAME,
+    },
   },
   devtools: { enabled: false },
   modules: [
-    '@nuxt/icon',
-    'shadcn-nuxt',
-    '@nuxtjs/color-mode',
-    '@nuxt/image',
+    "@nuxt/icon",
+    "shadcn-nuxt",
+    "@nuxtjs/color-mode",
+    "@nuxt/image",
+    "@nuxt/eslint",
   ],
+
+  eslint: {
+    config: {
+      standalone: false,
+    },
+  },
   colorMode: {
-    classSuffix: ''
+    classSuffix: "",
   },
   shadcn: {
     /**
      * Prefix for all the imported component
      */
-    prefix: '',
+    prefix: "",
     /**
      * Directory that the component lives in.
      * @default "./components/ui"
      */
-    componentDir: './components/ui'
+    componentDir: "./components/ui",
   },
-  css: ['~/assets/css/tailwind.css'],
+  css: ["~/assets/css/tailwind.css"],
   vite: {
-  plugins: [
-    tailwindcss(),
-  ],
-  
-},
-})
+    plugins: [
+      tailwindcss(),
+    ],
+
+  },
+});

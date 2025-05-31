@@ -1,16 +1,16 @@
-import { readFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 
 export default defineEventHandler(async (event) => {
   const { id } = await readBody(event);
 
   try {
-    const filePath = join(process.cwd(), 'server', 'data', 'server_sftp.json');
-    const raw = await readFile(filePath, 'utf-8');
+    const filePath = join(process.cwd(), "server", "data", "server_sftp.json");
+    const raw = await readFile(filePath, "utf-8");
     const json = JSON.parse(raw);
 
     if (!Array.isArray(json.servers)) {
-      throw new Error('Invalid server data format. Expected an array of servers.');
+      throw new TypeError("Invalid server data format. Expected an array of servers.");
     }
 
     const updatedServers = json.servers.filter((server: any) => server.id !== id);
@@ -19,23 +19,24 @@ export default defineEventHandler(async (event) => {
       return {
         success: false,
         message: `Server with ID ${id} not found.`,
-        error: 'No server deleted.'
+        error: "No server deleted.",
       };
     }
 
-    await writeFile(filePath, JSON.stringify({ servers: updatedServers }, null, 2), 'utf-8');
+    await writeFile(filePath, JSON.stringify({ servers: updatedServers }, null, 2), "utf-8");
 
     return {
       success: true,
-      message: `Server with ID ${id} deleted.`
+      message: `Server with ID ${id} deleted.`,
     };
-  } catch (error: any) {
+  }
+  catch (error: any) {
     return {
       success: false,
-      message: 'Failed to delete server',
+      message: "Failed to delete server",
       error: error?.message || String(error),
       stack: error?.stack || undefined,
-      code: error?.code || undefined
+      code: error?.code || undefined,
     };
   }
 });

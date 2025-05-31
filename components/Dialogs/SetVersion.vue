@@ -1,8 +1,53 @@
+<script setup lang="ts">
+import { toTypedSchema } from "@vee-validate/zod";
+import { toast } from "vue-sonner";
+import * as z from "zod";
+
+const props = defineProps<{
+  versioningFileName: string;
+}>();
+const emit = defineEmits<{
+  (e: "created"): void;
+}>();
+const route = useRoute();
+const isDialogOpen = ref(false);
+
+const formSchema = toTypedSchema(z.object({
+  version: z.string().min(6).max(32),
+}));
+
+async function onSubmit(values: any) {
+  try {
+    await $fetch("/api/v1/serverfiles", {
+      method: "POST",
+      body: {
+        connectionUrl: route?.query?.host,
+        username: route?.params?.id,
+        password: route?.query?.password,
+        filename: props.versioningFileName,
+        content: values.version,
+      },
+    });
+    isDialogOpen.value = false;
+    emit("created");
+  }
+  catch (e: any) {
+    const message = e?.data?.message || e?.message || "Failed to create file";
+    toast.error("Error", {
+      description: message,
+    });
+    console.error(e);
+  }
+}
+</script>
+
 <template>
   <Form v-slot="{ handleSubmit }" as="" keep-values :validation-schema="formSchema">
     <Dialog v-model:open="isDialogOpen">
       <DialogTrigger as-child>
-        <Button class="bg-green-500">Create file</Button>
+        <Button class="bg-green-500">
+          Create file
+        </Button>
       </DialogTrigger>
       <DialogContent class="sm:max-w-[425px]">
         <DialogHeader>
@@ -23,52 +68,11 @@
           </FormField>
         </form>
         <DialogFooter>
-          <Button type="submit" form="dialogForm">Create file</Button>
+          <Button type="submit" form="dialogForm">
+            Create file
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   </Form>
 </template>
-
-<script setup lang="ts">
-const route = useRoute()
-
-import * as z from 'zod'
-import { toTypedSchema } from '@vee-validate/zod'
-import { toast } from 'vue-sonner';
-const emit = defineEmits<{
-  (e: 'created'): void
-}>()
-
-const props = defineProps<{
-  versioningFileName: string
-}>()
-const isDialogOpen = ref(false)
-
-const formSchema = toTypedSchema(z.object({
-  version: z.string().min(6).max(32),
-}))
-
-async function onSubmit(values: any) {
-  try {
-    await $fetch('/api/v1/serverfiles', {
-      method: 'POST',
-      body: {
-        connectionUrl: route?.query?.host,
-        username: route?.params?.id,
-        password: route?.query?.password,
-        filename: props.versioningFileName,
-        content: values.version
-      }
-    })
-    isDialogOpen.value = false
-    emit('created')
-  } catch (e: any) {
-    const message = e?.data?.message || e?.message || 'Failed to create file';
-    toast.error('Error', {
-      description: message,
-    })
-    console.error(e)
-  }
-}
-</script>

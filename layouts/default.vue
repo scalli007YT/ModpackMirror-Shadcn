@@ -1,3 +1,6 @@
+<script lang="ts" setup>
+</script>
+
 <template>
   <div>
     <SidebarProvider :style="{ '--sidebar-width': '19rem' }">
@@ -12,6 +15,3 @@
     </SidebarProvider>
   </div>
 </template>
-
-<script lang="ts" setup>
-</script>

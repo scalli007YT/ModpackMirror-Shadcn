@@ -1,5 +1,6 @@
-import { CurseForgeClient, CurseForgeSortOrder } from 'curseforge-api';
-import { H3Event } from 'h3';
+import type { H3Event } from "h3";
+
+import { CurseForgeClient, CurseForgeSortOrder } from "curseforge-api";
 // https://minimusubi.github.io/curseforge-api
 export default defineEventHandler(async (event: H3Event) => {
   const { CurseforgeAPIKey } = useRuntimeConfig();
@@ -7,25 +8,26 @@ export default defineEventHandler(async (event: H3Event) => {
 
   // Get 'search' query param from URL
   const query = getQuery(event);
-  const searchTerm = typeof query.search === 'string' ? query.search : '';
+  const searchTerm = typeof query.search === "string" ? query.search : "";
 
   try {
     const mods = await client.searchMods(432, {
-      classId: 4471, 
-      searchFilter: searchTerm,  // use dynamic search term here
+      classId: 4471,
+      searchFilter: searchTerm, // use dynamic search term here
       sortField: 2,
       pageSize: 10,
-      sortOrder: CurseForgeSortOrder.Descending
+      sortOrder: CurseForgeSortOrder.Descending,
     });
 
     return { success: true, data: mods.data };
-  } catch (error: any) {
+  }
+  catch (error: any) {
     return {
       success: false,
-      message: 'Failed to fetch modpacks',
+      message: "Failed to fetch modpacks",
       error: error?.message || String(error),
       stack: error?.stack || undefined,
-      code: error?.code || undefined
+      code: error?.code || undefined,
     };
   }
 });

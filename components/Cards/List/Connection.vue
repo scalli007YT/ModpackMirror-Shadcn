@@ -1,10 +1,31 @@
+<script setup lang="ts">
+const props = defineProps<{
+  server: {
+    id: string;
+    name?: string;
+    host: string;
+    username: string;
+    password: string;
+    modpack: {
+      id?: string;
+    };
+  };
+}>();
+
+const emit = defineEmits<{
+  (e: "changed"): void;
+}>();
+</script>
+
 <template>
   <div class="flex-1 items-stretch gap-2">
     <Card class="h-full">
       <CardHeader class="w-full flex flex-row items-center justify-between">
-        <CardTitle class="text-left">{{ server.name }}</CardTitle>
+        <CardTitle class="text-left">
+          {{ server.name }}
+        </CardTitle>
         <DialogsEditConnection :server="server" @edited="emit('changed')">
-          <Icon name="material-symbols:edit-rounded" @click="" size="18" class="cursor-pointer" />
+          <Icon name="material-symbols:edit-rounded" size="18" class="cursor-pointer" />
         </DialogsEditConnection>
       </CardHeader>
 
@@ -19,16 +40,6 @@
         </div>
       </CardContent>
       <CardFooter class="flex items-center justify-between">
-
-        <NuxtLink :to="hasVersion
-          ? { path: '/modpacks' }
-          : { path: '/connections/' + server.id, query: { host: server.host, password: server.password } }">
-          <Button>
-            <Icon :name="hasVersion ? 'material-symbols:tools-wrench' : 'material-symbols:gfit-health'" />
-            {{ hasVersion ? 'Manage Modpack' : 'Fix File' }}
-          </Button>
-        </NuxtLink>
-
         <AlertDialog>
           <AlertDialogTrigger>
             <Button variant="destructive">
@@ -46,7 +57,9 @@
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction @click="deleteServer(server.id)">Continue</AlertDialogAction>
+              <AlertDialogAction>
+                Continue
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -54,80 +67,3 @@
     </Card>
   </div>
 </template>
-
-<script setup lang="ts">
-import { toast } from 'vue-sonner';
-
-
-const props = defineProps<{
-  server: {
-    id: string
-    name?: string
-    host: string
-    username: string
-    password: string
-    modpack: {
-      id?: string
-    }
-  }
-}>()
-
-const emit = defineEmits<{
-  (e: 'changed'): void
-}>()
-
-
-interface FileEntry {
-  name: string
-  type: string
-}
-
-interface ApiResponse {
-  success: boolean
-  files: FileEntry[]
-}
-
-// Fetch server files example (standardized error/success handling)
-// const { data, error } = await useFetch<ApiResponse>('/api/v1/serverfiles/sftp-connect', {
-//   method: 'POST',
-//   body: {
-//     connectionUrl: props.server.host,
-//     username: props.server.username,
-//     password: props.server.password,
-//   },
-// })
-// if (error.value) {
-//   toast.error('Error', { description: error.value?.data?.message || error.value?.message || 'Failed to fetch server files' });
-//   console.error('Fehler:', error.value)
-// } else if (!data.value?.success) {
-//   toast.error('Error', { description: data.value?.message || 'Failed to fetch server files' });
-// } else {
-//   toast.success('Success', { description: 'Server files loaded successfully' });
-// }
-
-const deleteServer = async (id: string) => {
-  const { data, error } = await useFetch<{ success: boolean; message?: string }>('/api/v1/servers', {
-    method: 'DELETE',
-    body: { id },
-  });
-  if (error.value) {
-    toast.error('Error', { description: error.value?.data?.message || error.value?.message || 'Failed to delete server' });
-    console.error(error.value);
-    return;
-  }
-  if (!data.value?.success) {
-    toast.error('Error', { description: data.value?.message || 'Failed to delete server' });
-    return;
-  }
-  toast.success('Server deleted', { description: 'The server was deleted successfully' });
-  emit('changed');
-}
-
-
-
-const VersioningFileName = useRuntimeConfig().public.VersioningFileName
-// const fileResult = computed(() => data.value?.files ?? [])
-// const hasVersion = computed(() => fileResult.value.some(item => item.name === VersioningFileName))
-const fileResult = null
-const hasVersion = true
-</script>

@@ -1,3 +1,48 @@
+<script setup lang="ts">
+import { toTypedSchema } from "@vee-validate/zod";
+import { toast } from "vue-sonner";
+import * as z from "zod";
+
+const emit = defineEmits<{
+  (e: "created"): void;
+}>();
+
+const isDialogOpen = ref(false);
+
+const formSchema = toTypedSchema(z.object({
+  name: z.string().min(6).max(32),
+  username: z.string().min(6).max(32),
+  host: z.string().url({ message: "Host must be a valid URL" }),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+}));
+
+async function onSubmit(values: any) {
+  try {
+    await $fetch("/api/v1/servers", {
+      method: "POST",
+      body: {
+        name: values.name,
+        username: values.username,
+        host: values.host,
+        password: values.password,
+      },
+    });
+    isDialogOpen.value = false;
+    emit("created");
+    toast.success("Connection created successfully", {
+      description: "Your connection has been created.",
+    });
+  }
+  catch (e: any) {
+    const message = e?.data?.message || e?.message || "Failed to create connection";
+    toast.error("Error", {
+      description: message,
+    });
+    console.error(e);
+  }
+}
+</script>
+
 <template>
   <Form v-slot="{ handleSubmit }" keep-values :validation-schema="formSchema">
     <Dialog v-model:open="isDialogOpen">
@@ -47,54 +92,11 @@
           </FormField>
         </form>
         <DialogFooter>
-          <Button type="submit" form="dialogForm">Create file</Button>
+          <Button type="submit" form="dialogForm">
+            Create file
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   </Form>
 </template>
-
-<script setup lang="ts">
-import * as z from 'zod'
-import { toTypedSchema } from '@vee-validate/zod'
-import { toast } from 'vue-sonner';
-
-const emit = defineEmits<{
-  (e: 'created'): void
-}>()
-
-const isDialogOpen = ref(false)
-
-const formSchema = toTypedSchema(z.object({
-  name: z.string().min(6).max(32),
-  username: z.string().min(6).max(32),
-  host: z.string().url({ message: 'Host must be a valid URL' }),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-}))
-
-
-async function onSubmit(values: any) {
-  try {
-    await $fetch('/api/v1/servers', {
-      method: 'POST',
-      body: {
-        name: values.name,
-        username: values.username,
-        host: values.host,
-        password: values.password,
-      },
-    })
-    isDialogOpen.value = false
-    emit('created')
-    toast.success('Connection created successfully', {
-      description: 'Your connection has been created.',
-    })
-  } catch (e: any) {
-    const message = e?.data?.message || e?.message || 'Failed to create connection';
-    toast.error('Error', {
-      description: message,
-    })
-    console.error(e)
-  }
-}
-</script>
